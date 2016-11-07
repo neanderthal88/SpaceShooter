@@ -1,177 +1,104 @@
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
+
+
+import controlP5.*;
+
+ControlP5 cp5;
+//Interfaz de usuario Processing
+
+
+Minim minim;
+FFT fft;
+AudioInput in;
+float[] angle;
+float[] x,y,z;
+
+
+
+PImage player;
+PImage bullet;
+PImage enemy;
+
 SpaceShip s1 = new SpaceShip(250,750, 1); 
 SpaceShip s2 = new SpaceShip(100, 750, 2); 
 ArrayList<Bullet> bullets = new ArrayList();
 ArrayList<Asteriod> asteriods = new ArrayList();
 
 
-class SpaceShip
+void setup()
 {
-  int x;
-  int y; 
-  int player;
+  size(500,800,P3D); 
+  asteriodsAssemble();
+  bullet = loadImage("bala.gif");
+  player = loadImage("a11.png");
+  //player.resize(width/4,height/8);  
+   enemy = loadImage("C1.png");
+   
+   
+   //Control
+   
+   cp5 = new ControlP5(this);
   
-  SpaceShip(int x, int y, int player)
-  {
-    this.x = x; 
-    this.y = y; 
-    this.player = player; 
-  }
-  
-  //getter and setters 
-  int getX()
-  {
-    return this.x; 
-  }
-  
-  void setX(int x)
-  {
-    this.x = x; 
-  }
-  
-  int getY()
-  {
-    return this.y; 
-  }
-  
-  void setY(int y)
-  {
-    this.y = y; 
-  }
-  
-  void display()
-  {
-    if(player == 1)
-    {
-      fill(0,255,0);
-    }
-    else
-    {
-      fill(255,255,0); 
-    }
-    noStroke(); 
-    rect(x, y, 50, 50);
-  }
-  
+   
+   
+   
+   //Universo creado con ruido
+   minim = new Minim(this);
+   in = minim.getLineIn(Minim.STEREO,2048,192000.0);
+   in = minim.getLineIn();
+   fft = new FFT(in.bufferSize(), in.sampleRate());
+   
+   
+   y = new float[fft.specSize()];
+   x = new float[fft.specSize()];
+   z = new float[fft.specSize()];
+   
+   angle = new float[fft.specSize()];
+   
+   
 }
 
-class Bullet//bullet class
+void draw()
 {
-  int x;
-  int y;
-  int speed;
-  Bullet(int x, int y)
-  {
-    this.x = x; 
-    this.y = y; 
-  }
-  //getter and setters 
-  int getX()
-  {
-    return this.x; 
-  }
+  background(0); 
+  image(player,mouseX-20,mouseY);
+  player.resize(0,32);
   
-  void setX(int x)
-  {
-    this.x = x; 
-  }
   
-  int getY()
-  {
-    return this.y; 
-  }
   
-  void setY(int y)
-  {
-    this.y = y; 
-  }
-  void display()
-  {
-    stroke(255);
-    point(x,y);
-  }
-  void move()
-  {
-    y -= 2;
-  }
-}
+  //player.display();
+  //keepSpaceShipsInCanvas(s1); 
+  
+  /* For Player 2  */
+  //s2.display(); 
+  //keepSpaceShipsInCanvas(s2); 
+  
+  /* Bullet bookkepping code */
+  removeToBulletLimit(500);
+  moveAllBullets();
+  displayAllBullets();
+  
+  /* Asteriod book keeping code */
+  moveAllAsteriods(); 
+  displayAllAsteriods(); 
+  
+  /* Effects of the bullets */
+  pushBack();
+  //destroyAsteriod();
+  
+  /* Game Conditions */
+  loseCondition();
+  winCondition(); 
+  
+  //universo creadoc on musica
+  fft.forward(in.mix);
+  doubleAtomicSprocket();
 
-class Asteriod
-{
-  int x; 
-  int y=0; 
-  int speed; 
-  int size; 
-  Asteriod(int x, int speed, int size)
-  {
-    this.x = x; 
-    this.speed = speed; 
-    this.size = size; 
-  }
-    //getter and setters 
-  int getX()
-  {
-    return this.x; 
-  }
-  
-  void setX(int x)
-  {
-    this.x = x; 
-  }
-  
-  int getY()
-  {
-    return this.y; 
-  }
-  
-  void setY(int y)
-  {
-    this.y = y; 
-  }
-  
-  void display()
-  {
-    fill(0,0,255);
-    noStroke(); 
-    rect(x, y, 50, size);
-  }
-  
-  void move() 
-  {
-    y += speed; 
-  }
-  
-}
-
-void moveAllBullets()
-{
-  for(Bullet temp : bullets)
-  {
-    temp.move();
-  }
-}
-
-void displayAllBullets()
-{
-  for(Bullet temp : bullets)
-  {
-    temp.display();
-  }
-}
-
-void removeToBulletLimit(int maxLength)
-{
-  while(bullets.size() > maxLength)
-  {
-    bullets.remove(0);
-  }
-  for(Bullet b : bullets)
-  {
-    if(b.y <= 0)
-    {
-      bullets.remove(b); 
-      break; 
-    }
-  }
 }
 
 void mousePressed()//add a new bullet if mouse is clicked
@@ -180,39 +107,39 @@ void mousePressed()//add a new bullet if mouse is clicked
   bullets.add(temp);
 }
 
-//gives the spaceship movement
-void keyPressed()
-{
-  if(key == CODED){
-    switch(keyCode)
-    {
-      case RIGHT:
-        s1.x +=20; 
-        break;
-      case LEFT:
-        s1.x-=20; 
-        break;
-      default:
-        break;
-    }
-  }
-  else if(keyPressed) //space is not special key 
-  {
-    if(key == ' ' )
-    {
-      Bullet temp = new Bullet(s1.x+25,s1.y);
-      bullets.add(temp);
-    }
-    else if(key == 'a' || key =='A')
-    {
-      s2.x -=20; 
-    }
-    else if(key == 'd' || key == 'D')
-    {
-      s2.x +=20; 
-    }
-  }
-} 
+///gives the spaceship movement
+//void keyPressed()
+//{
+//  if(key == CODED){
+//    switch(keyCode)
+//    {
+//      case RIGHT:
+//        s1.x +=20; 
+//        break;
+//      case LEFT:
+//        s1.x-=20; 
+//        break;
+//      default:
+//        break;
+//    }
+//  }
+//  else if(keyPressed) //space is not special key 
+//  {
+//    if(key == ' ' )
+//    {
+//      Bullet temp = new Bullet(s1.x+25,s1.y);
+//      bullets.add(temp);
+//    }
+//    else if(key == 'a' || key =='A')
+//    {
+//      s2.x -=20; 
+//    }
+//    else if(key == 'd' || key == 'D')
+//    {
+//      s2.x +=20; 
+//    }
+//  }
+//} 
 
 void keepSpaceShipsInCanvas(SpaceShip s)
 {
@@ -319,37 +246,53 @@ void winCondition()
     
 }
 
-void setup()
-{
-  size(500,800); 
-  asteriodsAssemble(); 
+
+void doubleAtomicSprocket() {
+  noStroke();
+  pushMatrix();
+  translate(width/2, height/2);
+  for (int i = 0; i < fft.specSize() ; i++) {
+    y[i] = y[i] + fft.getBand(i)/2048;
+    x[i] = x[i] + fft.getFreq(i)/2048;
+    z[i] = z[i] + fft.getBand(i)/2048;
+    angle[i] = angle[i] + fft.getFreq(i)/2000;
+    rotateX(sin(angle[i]/2));
+    rotateY(cos(angle[i]/2));
+    rotateZ(tan(angle[i]));
+    stroke(fft.getFreq(i)*19,fft.getBand(i)*191,fft.getBand(i)*190);
+    fill(fft.getFreq(i)*18, fft.getBand(i)*168, fft.getBand(i)*30);
+    pushMatrix();
+    translate((x[i]+50)%width/3, (y[i]+50)%height/3, (z[i]+50)%width+height/9);
+    box(fft.getBand(i)/20+fft.getFreq(i)/44);
+    popMatrix();
+  }
+  popMatrix();
+  noStroke();
+  pushMatrix();
+  translate(width/2, height/2);
+  for (int i = 0; i < fft.specSize() ; i++) {
+    y[i] = y[i] + fft.getBand(i)/2048;
+    x[i] = x[i] + fft.getFreq(i)/2048;
+    z[i] = z[i] + fft.getBand(i)/2048;
+    angle[i] = angle[i] + fft.getFreq(i)/2000000000;
+    rotateX(sin(angle[i]/2));
+    rotateY(cos(angle[i]/2));
+    rotateZ(tan(angle[i]));
+    stroke(fft.getFreq(i)/19,fft.getBand(i)*191,fft.getBand(i)*190);
+    fill(fft.getFreq(i)/18, fft.getBand(i)*168, fft.getBand(i)*30);
+    pushMatrix();
+    translate((x[i]+50)%width/3, (y[i]+50)%height/3, (z[i]+50)%width+height/9);
+    box(fft.getBand(i)/20+fft.getFreq(i)/33);
+    popMatrix();
+  }
+  popMatrix();
+
 }
-
-void draw()
+void stop()
 {
-  background(0); 
-  s1.display();
-  keepSpaceShipsInCanvas(s1); 
-  
-  /* For Player 2  */
-  //s2.display(); 
-  //keepSpaceShipsInCanvas(s2); 
-  
-  /* Bullet bookkepping code */
-  removeToBulletLimit(500);
-  moveAllBullets();
-  displayAllBullets();
-  
-  /* Asteriod book keeping code */
-  moveAllAsteriods(); 
-  displayAllAsteriods(); 
-  
-  /* Effects of the bullets */
-  pushBack();
-  //destroyAsteriod();
-  
-  /* Game Conditions */
-  loseCondition();
-  winCondition(); 
+  // No olvidar cerrar Minim con estas dos ultimas clases
+  //jingle.close();
+  minim.stop();
 
+  super.stop();
 }
