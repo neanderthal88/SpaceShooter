@@ -1,0 +1,77 @@
+# Blender MTL File: 'ship2.blend'
+# Material Count: 7
+
+newmtl Material.007
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd /Users/jam/Pictures/8971306-Seamless-Space-Hull-Ship-Pattern-as-Background-Stock-Photo-spaceship-texture.jpg
+
+newmtl Material.007_8971306-Seamless-Space-Hull-Ship-Pattern-as-Background-Stock-Ph
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd /Users/jam/Pictures/8971306-Seamless-Space-Hull-Ship-Pattern-as-Background-Stock-Photo-spaceship-texture.jpg
+
+newmtl Material.007_hull-panels-merged-2.jpg
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd /Users/jam/Pictures/hull-panels-merged-2.jpg
+
+newmtl Material.008
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl Material.009
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.000667 0.640000 0.568677
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl Material.009_8971306-Seamless-Space-Hull-Ship-Pattern-as-Background-Stock-Ph
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.000667 0.640000 0.568677
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd /Users/jam/Pictures/8971306-Seamless-Space-Hull-Ship-Pattern-as-Background-Stock-Photo-spaceship-texture.jpg
+
+newmtl Material.009_hull-panels-merged-2.jpg
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.000667 0.640000 0.568677
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd /Users/jam/Pictures/hull-panels-merged-2.jpg

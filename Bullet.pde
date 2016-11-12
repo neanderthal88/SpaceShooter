@@ -1,5 +1,6 @@
 class Bullet//bullet class
 {
+  
   int x;
   int y;
   int speed;
@@ -33,8 +34,7 @@ class Bullet//bullet class
     
     
     
-    stroke(255);
-    point(x,y);
+    shape(bala,x,y);
   }
   void move()
   {

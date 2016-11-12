@@ -2,6 +2,7 @@ class Asteriod
 {
   int x; 
   int y=0; 
+  int z;
   int speed; 
   int size; 
   Asteriod(int x, int speed, int size)
@@ -30,11 +31,19 @@ class Asteriod
   {
     this.y = y; 
   }
+  int getZ(){
+  return this.z;
+  
+  }
+  void setZ(int z)
+  {
+  this.z = z;
+  }
   
   void display()
   {
-    image(enemy,x,y);
-    enemy.resize(0,40);
+    shape(enemy,x,y);
+    
   }
   
   void move() 

@@ -2,10 +2,12 @@ class SpaceShip
 {
   int x;
   int y; 
+  int z;
   int player;
   
-  SpaceShip(int x, int y, int player)
+  SpaceShip(int x, int y, int player, int z)
   {
+    this.z = z;
     this.x = x; 
     this.y = y; 
     this.player = player; 
@@ -29,6 +31,12 @@ class SpaceShip
   void setY(int y)
   {
     this.y = y; 
+  }int getZ()
+  {
+   return this.z; 
+  }
+  void setZ(int z){
+   this.z= z; 
   }
   
   void display()
@@ -39,7 +47,7 @@ class SpaceShip
     }
     else
     {
-      fill(255,255,0); 
+      fill(255,255,0);
     }
     noStroke(); 
     rect(x, y, 50, 50);
